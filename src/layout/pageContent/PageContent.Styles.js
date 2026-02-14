@@ -1,10 +1,6 @@
-import styled from 'styled-components'
+import { Container } from "@radix-ui/themes";
+import styled from "styled-components";
 
-export const Container = styled.div`
-    height: calc(100vh - 57.97px);
-    overflow-y: auto;
-
-    @media (max-width: 527px) {
-        height: auto;
-    }
+export const PageContent = styled(Container)`
+    margin-top: 57.97px;
 `;
