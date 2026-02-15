@@ -1,14 +1,57 @@
-import { useContext, useEffect, useState, createContext } from "react";
+import { useCallback, useContext, useEffect, useState, createContext } from "react";
 
 import API_PATHS from "../enums/apiPaths";
 import { getData, getToken } from "../utils/httpRequest";
 
 const DataContext = createContext();
 
+const BATCH_SIZE = 3;
+
 const useDataProvider = () => {
     const [authToken, setAuthToken] = useState("");
     const [genres, setGenres] = useState([]);
+    const [genresData, setGenresData] = useState({});
+    const [searchResults, setSearchResults] = useState([]);
 
+    /**
+     * Lazy load movies by genres in batches
+     */
+    const fetchMoviesByGenreBatch = useCallback(async () => {
+        const startIndex = Object.keys(genresData).length;
+        const promises = [];
+        
+        for(let i = startIndex; i < Math.min(startIndex + BATCH_SIZE, genres.length); i++) {
+            const genre = genres[i];
+            promises.push(getData(`${API_PATHS.searchMovies}?genreId=${genre.id}`, authToken));
+        }
+
+        await Promise.all(promises).then(responses => {
+            const data = {...genresData};
+            for(let i = 0; i < responses.length; i++) {
+                const genreId = genres[i].id;
+                const movies = responses[i].data;
+                data[genreId] = movies;    
+            }
+            setGenresData(data);
+        });
+
+    }, [authToken, genres, genresData]);
+
+    /**
+     * Search movies by genre and/or title
+     */
+    const searchMovies = async (queryParams) => {
+        const params = new URLSearchParams(queryParams);
+        let path = `${API_PATHS.searchMovies}?${params.toString()}`;
+        
+        const resp = await getData(path, authToken);
+        setSearchResults(resp.data);
+    };
+
+    /**
+     * Fetch auth token on app load and store it.
+     * This token will be used for subsequent API requests
+     */
     useEffect(() => {
         async function fetchToken() {
             const resp = await getToken();
@@ -18,6 +61,9 @@ const useDataProvider = () => {
         fetchToken();
     }, []);
 
+    /**
+     * Fetch genres data once the auth token is available and store it.
+     */
     useEffect(() => {
         async function fetchGenres() {
             const resp = await getData(API_PATHS.getGenres, authToken);
@@ -29,8 +75,21 @@ const useDataProvider = () => {
         }
     }, [authToken]);
 
+    /**
+     * Fetch first batch of movies per genre once genres are loaded
+     */
+    useEffect(() => {
+        if(genres.length > 0 && Object.keys(genresData).length === 0) {
+            fetchMoviesByGenreBatch();
+        }
+    }, [fetchMoviesByGenreBatch, genres, genresData]);
+
     return {
-        genres
+        genres,
+        genresData,
+        fetchNextBatch: fetchMoviesByGenreBatch,
+        searchMovies,
+        searchResults
     };
 };
 

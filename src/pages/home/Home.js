@@ -19,7 +19,7 @@ const Home = () => {
     
     return (
         <PageContent size="3">
-            <Section size="2">
+            <Section size="4">
                 <Flex direction="row" gap="2">
                     <DropDown
                         options={genreOptions} value={query.genre}

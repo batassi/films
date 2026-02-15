@@ -23,7 +23,6 @@ const DropDown = ({ onSelect, options, value }) => {
                 </DropDownButton>
             </DropdownMenu.Trigger>
             <DropdownMenu.Content>
-                {/* <DropdownMenu.Item value="all">All Genres</DropdownMenu.Item> */}
                 {options.map((option) => 
                     <DropdownMenu.Item key={option.value} value={option.value} onClick={() => onSelect(option)}>
                         {option.label}
