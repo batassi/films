@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { Container, Flex, Section, TextField } from "@radix-ui/themes";
+import { Container, Flex, Section, Spinner, TextField } from "@radix-ui/themes";
 import { Search } from "lucide-react";
 
 import { useData } from "../../contexts/dataContext";
@@ -10,7 +10,7 @@ import { BatchLink, BatchLinkContainer, InputField, SearchButton } from "./Home.
 const DEFAULT_GENRE = { label: "All Genres", value: "all" };
 
 const Home = () => {
-    const { fetchNextBatch, genres, genresData } = useData();
+    const { fetchNextBatch, genres, genresData, isLoading } = useData();
     const [query, setQuery] = useState({ genre: DEFAULT_GENRE, search: "" });
 
     const genreOptions = useMemo(() =>
@@ -45,11 +45,13 @@ const Home = () => {
             </Container>
 
             <Container size="4">
-                {previews.map((genre) => <GenrePreview key={genre.id} genre={genre} />)}
+                <Spinner size="3" loading={isLoading}>
+                    {previews.map((genre) => <GenrePreview key={genre.id} genre={genre} />)}
 
-                <BatchLinkContainer>
-                    <BatchLink href="#" onClick={fetchNextBatch}>Load More</BatchLink>
-                </BatchLinkContainer>
+                    <BatchLinkContainer>
+                        <BatchLink href="#" onClick={fetchNextBatch}>Load More</BatchLink>
+                    </BatchLinkContainer>
+                </Spinner>
             </Container>
         </>
     );

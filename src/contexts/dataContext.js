@@ -11,12 +11,14 @@ const useDataProvider = () => {
     const [authToken, setAuthToken] = useState("");
     const [genres, setGenres] = useState([]);
     const [genresData, setGenresData] = useState({});
+    const [isLoading, setIsLoading] = useState(false);
     const [searchResults, setSearchResults] = useState([]);
 
     /**
      * Lazy load movies by genres in batches
      */
     const fetchMoviesByGenreBatch = useCallback(async () => {
+        setIsLoading(true);
         const startIndex = Object.keys(genresData).length;
         const promises = [];
         
@@ -33,6 +35,7 @@ const useDataProvider = () => {
                 data[genreId] = movies;    
             }
             setGenresData(data);
+            setIsLoading(false);
         });
 
     }, [authToken, genres, genresData]);
@@ -85,9 +88,10 @@ const useDataProvider = () => {
     }, [fetchMoviesByGenreBatch, genres, genresData]);
 
     return {
+        fetchNextBatch: fetchMoviesByGenreBatch,
         genres,
         genresData,
-        fetchNextBatch: fetchMoviesByGenreBatch,
+        isLoading,
         searchMovies,
         searchResults
     };
