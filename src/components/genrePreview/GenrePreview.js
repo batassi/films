@@ -13,8 +13,6 @@ const propsTypes = {
     }).isRequired
 };
 
-const THRESHOLD = 7;
-
 const GenrePreview = ({ genre }) => {
     const { genresData } = useData();
 
@@ -28,7 +26,7 @@ const GenrePreview = ({ genre }) => {
             </Flex>
 
             <Flex direction="row" gap="4">
-                {movies?.filter((_, index) => index < THRESHOLD).map(movie =>
+                {movies?.map(movie =>
                     <MoviePoster key={movie.id} movie={movie} />
                 )}
             </Flex>

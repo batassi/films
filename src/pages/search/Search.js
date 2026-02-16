@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useSearch  } from "wouter";
-import { Container, Flex, Heading, Spinner} from "@radix-ui/themes";
+import { Container, Flex, Spinner} from "@radix-ui/themes";
 
 import { useData } from "../../contexts/dataContext";
 import MoviePoster from "../../components/moviePoster/MoviePoster";

@@ -6,6 +6,7 @@ import { getData, getToken } from "../utils/httpRequest";
 const DataContext = createContext();
 
 const BATCH_SIZE = 3;
+const PREVIEW_SIZE = 7;
 
 const useDataProvider = () => {
     const [authToken, setAuthToken] = useState("");
@@ -23,7 +24,7 @@ const useDataProvider = () => {
         
         for(let i = startIndex; i < Math.min(startIndex + BATCH_SIZE, genres.length); i++) {
             const genre = genres[i];
-            promises.push(getData(`${API_PATHS.searchMovies}?genre=${genre.title}`, authToken));
+            promises.push(getData(`${API_PATHS.searchMovies}?genre=${genre.title}&limit=${PREVIEW_SIZE}`, authToken));
         }
 
         await Promise.all(promises).then(responses => {
