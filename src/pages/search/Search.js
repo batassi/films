@@ -20,18 +20,18 @@ const Search = () => {
         const search = searchParams.get("query") || undefined;
         const page = searchParams.get("page") || 1;
 
+        const fetchData = async () => {
+            setIsLoading(true);
+            const params = { page };
+            if(genre) params.genre = genre; 
+            if(search) params.search = search;
+
+            const data = await searchMovies(params);
+            setSearchResults(data);
+            setIsLoading(false);
+        };
+
         if(genre || search) {
-            const fetchData = async () => {
-                setIsLoading(true);
-                const params = { page };
-                if(genre) params.genre = genre; 
-                if(search) params.search = search;
-
-                const data = await searchMovies(params);
-                setSearchResults(data);
-                setIsLoading(false);
-            };
-
             fetchData();
         } else {
             setSearchResults({ data: []});

@@ -41,6 +41,16 @@ const useDataProvider = () => {
     }, [authToken, genres, genresData]);
 
     /**
+     * Get movie details by id
+     */
+    const getMovieDetails = async (id) => {
+        if(!authToken) return;
+
+        const resp = await getData(API_PATHS.getMovieDetails.replace('{movieId}', id), authToken);
+        return resp;
+    };
+
+    /**
      * Search movies by genre and/or title
      */
     const searchMovies = async (queryParams) => {
@@ -93,6 +103,7 @@ const useDataProvider = () => {
         fetchNextBatch: fetchMoviesByGenreBatch,
         genres,
         genresData,
+        getMovieDetails,
         isLoading,
         searchMovies
     };
