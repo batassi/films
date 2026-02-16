@@ -22,7 +22,7 @@ const Search = () => {
         if(genre || search) {
             const fetchData = async () => {
                 setIsLoading(true);
-                const params = { page};
+                const params = { page };
                 if(genre) params.genre = genre; 
                 if(search) params.search = search;
 

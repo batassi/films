@@ -31,7 +31,7 @@ const Pagination = ({ totalPages }) => {
         const searchParams = new URLSearchParams(queryString);
         const page = searchParams.get("page") || 1;
         searchParams.set("page", parseInt(page) + offset);
-        navigate(`/search?${searchParams.toString()}`);
+        navigate(`${location}?${searchParams.toString()}`);
     };
     
     return(

@@ -13,7 +13,6 @@ const propTypes = {
 };
 
 const DropDown = ({ onSelect, options, value }) => {
-
     return (
         <DropdownMenu.Root>
             <DropdownMenu.Trigger>
