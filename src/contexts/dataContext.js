@@ -12,7 +12,6 @@ const useDataProvider = () => {
     const [genres, setGenres] = useState([]);
     const [genresData, setGenresData] = useState({});
     const [isLoading, setIsLoading] = useState(false);
-    const [searchResults, setSearchResults] = useState([]);
 
     /**
      * Lazy load movies by genres in batches
@@ -44,11 +43,13 @@ const useDataProvider = () => {
      * Search movies by genre and/or title
      */
     const searchMovies = async (queryParams) => {
+        if(!authToken) return;
+
         const params = new URLSearchParams(queryParams);
         let path = `${API_PATHS.searchMovies}?${params.toString()}`;
         
         const resp = await getData(path, authToken);
-        setSearchResults(resp.data);
+        return resp;
     };
 
     /**
@@ -92,8 +93,7 @@ const useDataProvider = () => {
         genres,
         genresData,
         isLoading,
-        searchMovies,
-        searchResults
+        searchMovies
     };
 };
 

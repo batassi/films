@@ -24,7 +24,7 @@ const GenrePreview = ({ genre }) => {
         <Flex direction="column" gap="2">
             <Flex direction="row">
                 <GenreName as="h2">{genre.title}</GenreName>
-                <GenreLinks href={`/search?genre=${genre.id}`}>See All</GenreLinks>
+                <GenreLinks href={`/search?genre=${genre.title}`}>See All</GenreLinks>
             </Flex>
 
             <Flex direction="row" gap="4">
