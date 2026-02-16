@@ -22,13 +22,13 @@ const useDataProvider = () => {
         
         for(let i = startIndex; i < Math.min(startIndex + BATCH_SIZE, genres.length); i++) {
             const genre = genres[i];
-            promises.push(getData(`${API_PATHS.searchMovies}?genreId=${genre.id}`, authToken));
+            promises.push(getData(`${API_PATHS.searchMovies}?genre=${genre.title}`, authToken));
         }
 
         await Promise.all(promises).then(responses => {
             const data = {...genresData};
             for(let i = 0; i < responses.length; i++) {
-                const genreId = genres[i].id;
+                const genreId = genres[i+startIndex].id;
                 const movies = responses[i].data;
                 data[genreId] = movies;    
             }
