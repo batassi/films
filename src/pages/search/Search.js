@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import { useSearch  } from "wouter";
-import { Container, Flex, Spinner } from "@radix-ui/themes";
+import { Container, Flex, Heading, Spinner} from "@radix-ui/themes";
 
 import { useData } from "../../contexts/dataContext";
 import MoviePoster from "../../components/moviePoster/MoviePoster";
 import Pagination from "../../components/pagination/Pagination";
 import SearchForm from "../../components/searchForm/SearchForm";
+import { NoResultMessage } from "./Search.Styles";
 
 const Search = () => {
     const { searchMovies } = useData();
@@ -44,6 +45,10 @@ const Search = () => {
                     <Flex direction="row" gap="3" wrap="wrap" justify="center">
                         {searchResults?.data.map(movie => <MoviePoster key={movie.id} movie={movie} />)}
                     </Flex>
+
+                    {searchResults?.data.length === 0 && !isLoading && 
+                        <NoResultMessage as="h2">No results found</NoResultMessage>
+                    }
 
                     {searchResults?.totalPages > 1 && <Pagination totalPages={searchResults.totalPages} />}
                 </Spinner>
