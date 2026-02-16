@@ -2,6 +2,7 @@ import { Film } from "lucide-react";
 import styled from 'styled-components';
 
 export const AppName = styled.h2`
+    cursor: pointer;
     font-size: 28px;
     margin: 0.50rem 0;
 `;
