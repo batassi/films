@@ -10,7 +10,7 @@ const propTypes = {
 };
 
 const Pagination = ({ totalPages }) => {
-    const queryString = useSearch();  
+    const queryString = useSearch();
     const [location, navigate] = useLocation();
 
     const isFirstPage = queryString.includes("page=1") || !queryString.includes("page=");

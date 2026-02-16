@@ -33,6 +33,8 @@ const Search = () => {
             };
 
             fetchData();
+        } else {
+            setSearchResults({ data: []});
         }
     }, [queryString, searchMovies]);
 
